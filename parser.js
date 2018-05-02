@@ -161,7 +161,7 @@ Parser.prototype._parseConnect = function () {
 
   packet.protocolVersion = this._list.readUInt8(this._pos)
 
-  if (packet.protocolVersion !== 3 && packet.protocolVersion !== 4) {
+  if (packet.protocolVersion !== 3 && packet.protocolVersion !== 4 && packet.protocolVersion !== 5) {
     return this._emitError(new Error('Invalid protocol version'))
   }
 

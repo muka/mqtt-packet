@@ -207,12 +207,33 @@ testParseGenerate('no clientId with 3.1.1', {
   0, 0 // Client ID length
 ]))
 
+testParseGenerate('no clientId with 5', {
+  cmd: 'connect',
+  retain: false,
+  qos: 0,
+  dup: false,
+  length: 12,
+  protocolId: 'MQTT',
+  protocolVersion: 5,
+  clean: true,
+  keepalive: 30,
+  clientId: ''
+}, Buffer.from([
+  16, 12, // Header
+  0, 4, // Protocol ID length
+  77, 81, 84, 84, // Protocol ID
+  5, // Protocol version
+  2, // Connect flags
+  0, 30, // Keepalive
+  0, 0 // Client ID length
+]))
+
 testParseGenerateDefaults('default connect', {
   cmd: 'connect',
   clientId: 'test'
 }, Buffer.from([
   16, 16, 0, 4, 77, 81, 84,
-  84, 4, 2, 0, 0,
+  84, 5, 2, 0, 0,
   0, 4, 116, 101, 115, 116
 ]))
 

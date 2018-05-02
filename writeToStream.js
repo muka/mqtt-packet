@@ -78,7 +78,7 @@ function uncork (stream) {
 function connect (opts, stream) {
   var settings = opts || {}
   var protocolId = settings.protocolId || 'MQTT'
-  var protocolVersion = settings.protocolVersion || 4
+  var protocolVersion = settings.protocolVersion || 5
   var will = settings.will
   var clean = settings.clean
   var keepalive = settings.keepalive || 0
@@ -98,14 +98,14 @@ function connect (opts, stream) {
   } else length += protocolId.length + 2
 
   // Must be 3 or 4
-  if (protocolVersion !== 3 && protocolVersion !== 4) {
+  if (protocolVersion !== 3 && protocolVersion !== 4 && protocolVersion !== 5) {
     stream.emit('error', new Error('Invalid protocol version'))
     return false
   } else length += 1
 
   // ClientId might be omitted in 3.1.1, but only if cleanSession is set to 1
   if ((typeof clientId === 'string' || Buffer.isBuffer(clientId)) &&
-     (clientId || protocolVersion === 4) && (clientId || clean)) {
+     (clientId || (protocolVersion === 4 || protocolVersion === 5)) && (clientId || clean)) {
     length += clientId.length + 2
   } else {
     if (protocolVersion < 4) {
@@ -198,7 +198,9 @@ function connect (opts, stream) {
   // Generate protocol ID
   writeStringOrBuffer(stream, protocolId)
   stream.write(
-    protocolVersion === 4 ? protocol.VERSION4 : protocol.VERSION3
+    protocolVersion === 5 ? protocol.VERSION5
+        : protocolVersion === 4 ? protocol.VERSION4
+            : protocol.VERSION3
   )
 
   // Connect flags

@@ -97,6 +97,7 @@ protocol.SUBACK_HEADER = Buffer.from([protocol.codes['suback'] << protocol.CMD_S
 /* Protocol versions */
 protocol.VERSION3 = Buffer.from([3])
 protocol.VERSION4 = Buffer.from([4])
+protocol.VERSION5 = Buffer.from([5])
 
 /* QoS */
 protocol.QOS = [0, 1, 2].map(function (qos) {
